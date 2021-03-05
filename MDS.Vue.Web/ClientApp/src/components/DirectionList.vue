@@ -22,7 +22,7 @@
                 </td>
                 <td width="250" style="text-align:right;">
                     <button @click="edit(direction.id)" class="btn btn-info">Изменить</button>
-                    <button class="btn btn-danger" style="margin-left:10px">Удалить</button>
+                    <button @click="remove(direction)" class="btn btn-danger" style="margin-left:10px">Удалить</button>
                 </td>
             </tr>
         </tbody>
@@ -69,6 +69,19 @@
             },
             reload() {
                 this.getDirections();
+            },
+            remove(direction) {
+
+                if (!confirm("Вы действительно хотите удалить дирекцию [" + direction.name + "]?"))
+                    return;
+
+                axios.delete('/api/OrgUnits/' + direction.id)
+                    .then(() => {
+                        this.reload();
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
             }
         },
         mounted() {

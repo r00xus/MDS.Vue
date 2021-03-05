@@ -32,7 +32,7 @@
                 </td>
                 <td width="250" style="text-align:right;">
                     <button @click="edit(employee.id)" class="btn btn-info">Изменить</button>
-                    <button class="btn btn-danger" style="margin-left:10px">Удалить</button>
+                    <button  @click="remove(employee)" class="btn btn-danger" style="margin-left:10px">Удалить</button>
                 </td>
             </tr>
         </tbody>
@@ -90,6 +90,19 @@
             back() {
                 router.push({ name: 'departments', params: { id: this.employeeList.directionId } });
             },
+            remove(employee) {
+
+                if (!confirm("Вы действительно хотите удалить данные сотрудника [" + employee.name + "]?"))
+                    return;
+
+                axios.delete('/api/OrgUnits/' + employee.id)
+                    .then(() => {
+                        this.reload();
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            }
         },
         mounted() {
 
